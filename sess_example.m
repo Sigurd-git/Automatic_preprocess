@@ -3,6 +3,7 @@ shared_code_directory = [lab_scratch_directory '/shared/code'];
 
 addpath(genpath([shared_code_directory '/lab-intracranial-code']));
 addpath(genpath([shared_code_directory '/lab-analysis-code']));
+addpath(genpath([shared_code_directory '/Automatic_preprocess']));
 addpath([shared_code_directory '/export_fig']);
 
 % declare the root directory where all of your projects are

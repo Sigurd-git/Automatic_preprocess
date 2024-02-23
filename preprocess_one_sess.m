@@ -34,6 +34,9 @@ function preprocess_one_sess(exp, subjid, sess, trigchan_name, audiochan_name, p
     
     %% Get the trigger onset of each group according to timing files.
     [trig_onsets_smps,stim_names] = get_timing_and_stimnames(project_directory,trig_onsets_smps,sr,stim_info,exp,subjid,diff_tolerance,r);
+
+    keyboard;
+    
     save(stim_name_path, 'stim_names')
     
     %% get stim names, S and para file
