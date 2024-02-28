@@ -13,8 +13,6 @@ function trigger_index = find_trigger_index(rest_triggers, n_second_per_trigger,
         t_theory = delta+t0;
         t_theory = reshape(t_theory,[1 n_trigger]);
         t_theory_grid = repmat(t_theory, n_all_trigger,1); %real,theory
-        size(rest_triggers_grid)
-        size(t_theory_grid)
         diff = abs(rest_triggers_grid - t_theory_grid)<tolerance;
         % if any of the row is true, then the column is true
         exists = any(diff,1);
