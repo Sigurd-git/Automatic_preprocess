@@ -16,8 +16,9 @@ function [trig_onsets_smps,stim_names] = get_timing_and_stimnames(project_direct
     gts = cell(size(stim_info,1),1);
     stim_names = {};
     stim_count = 1;
-    for j = 1:size(stim_info,1)
-        filename = [project_directory '/data/subjects-v1/' subjid '/' project '/timing-' stim_info{j,1} '.txt'];
+    blk_count = 1;
+    for files = 1:size(stim_info,1)
+        filename = [project_directory '/data/subjects-v1/' subjid '/timing-' stim_info{files,1} '.txt'];
 
         % Generate import options for the text file
         opts = detectImportOptions(filename, 'FileType', 'text');
@@ -27,11 +28,9 @@ function [trig_onsets_smps,stim_names] = get_timing_and_stimnames(project_direct
         % Read the specified columns from the file
         data = readtable(filename, opts);
         % Get unique blk values
-        uniqueBlks = stim_info{j,2};
+        uniqueBlks = stim_info{files,2};
         n=length(uniqueBlks);
-        gt = zeros(n,1);
-
-
+        gt_file = cell(n,1);
         % Loop through each unique blk value
         for i = 1:n
             % Filter rows where blk is the current unique value
@@ -41,30 +40,25 @@ function [trig_onsets_smps,stim_names] = get_timing_and_stimnames(project_direct
             % Filter rows where ind is 1 for each group
             filteredRows = blkRows(blkRows.ind == 1, :);
             % Extract the time values for these rows
-            gt(i) = filteredRows.time;
-        end
-
-        if j == 1
-            triger_onset_in_second = triger_onsets_in_second(1);
-            gt = gt-gt(1)+triger_onset_in_second;
-
-            % get triger_onsets_in_second which is larger than gt(end)
-            rest_triggers = triger_onsets_in_second(triger_onsets_in_second > gt(end));
-        else
+            gt = filteredRows.time;
+            if blk_count == 1
+                % get triger_onsets_in_second which is larger than gt(end)
+                rest_triggers = triger_onsets_in_second;
+            end
             final_stim_name = blkRows.name(end);
-            wavinfo = audioinfo([project_directory '/stimuli/' final_stim_name '.wav']);
+            wavinfo = audioinfo([project_directory '/stimuli/' final_stim_name{:} '.wav']);
             dur = wavinfo.Duration;
-            
-            n_trigger = floor(delta_t/n_second_per_trigger);
             delta_t = gt(end)-gt(1)+dur;
-            rest_triggers_diff = diff(rest_triggers);
-            diff_in_theory = repmat(n_second_per_trigger,n_trigger,1);
-            trigger_index = find_trigger_index(rest_triggers_diff, diff_in_theory, tolerance);
+            n_trigger = floor(delta_t/n_second_per_trigger);
+            trigger_index = find_trigger_index(rest_triggers, n_second_per_trigger,n_trigger, tolerance);
             triger_onset_in_second = rest_triggers(trigger_index);
             gt = gt-gt(1)+triger_onset_in_second;
-            rest_triggers = triger_onsets_in_second(triger_onsets_in_second > gt(end));
+            rest_triggers = rest_triggers((n_trigger+1):end);
+            blk_count = blk_count+1;
+            gt_file{i} = gt;
         end
-        gts{j} = gt;
+        gt = vertcat(gt_file{:});
+        gts{files} = gt;
 
     end
     gt = vertcat(gts{:});

@@ -27,7 +27,7 @@ if or(~exist(trig_onsets_smps_file, 'file'),overwrite)
     % detect triggers in samples
     
     trigger_fig_directory = [project_directory '/figures/trigger-sync/' subjid '/r' num2str(r)];
-    trig_onsets_smps = detect_trigger_onsets(trigger_signal, trig_template, sr,  ...
+    trig_onsets_smps = detect_trigger_onsets_without_exportfig(trigger_signal, trig_template, sr,  ...
             'tol', tol,'plot', true, 'figdir', trigger_fig_directory);
     save(trig_onsets_smps_file,"trig_onsets_smps","sr")
 else

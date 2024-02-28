@@ -1,7 +1,7 @@
-function S = get_stim_information(project_directory,stim_info, subjid,project)
+function S = get_stim_information(project_directory,stim_info, subjid)
 clear S;
 for j = 1:size(stim_info,1)
-    X = load([project_directory '/data/subjects-v1/' subjid '/' project '/timings-and-behavior-' stim_info{j,1} '.mat']);
+    X = load([project_directory '/data/subjects-v1/' subjid '/timings-and-behavior-' stim_info{j,1} '.mat']);
     blocks = stim_info{j,2};
     if j == 1
         fldnames = fieldnames(X);
