@@ -6,8 +6,8 @@ ROOT=~/sigurd/$PROJECT
 
 mkdir -p $ROOT/data/ECoG-EDF/$SUBJECTID
 mkdir -p $ROOT/$SUBJECTID
-cp /archive/dmi/ecog-raw-data/$SUBJECTID/"$SUBJECTID"_TaskLog.xlsx $ROOT
-echo "look at $ROOT/"$SUBJECTID"_TaskLog.xlsx to figure out the session number"
+cp /archive/dmi/ecog-raw-data/$SUBJECTID/"$SUBJECTID"_TaskLog.* $ROOT/$SUBJECTID
+echo "look at $ROOT/"$SUBJECTID"_TaskLog.xlsx or $ROOT/"$SUBJECTID"_TaskLog.csv to figure out the session number"
 cp /archive/dmi/ecog-raw-data/SummaryTaskLog.xlsx $ROOT
 mkdir -p $ROOT/data/subjects-v1/$SUBJECTID # create directory to put experiment files
 cp -r /archive/dmi/ecog-raw-data/$SUBJECTID/experiment-files/$PROJECT/* $ROOT/data/subjects-v1/$SUBJECTID/ # copy over all files
