@@ -35,4 +35,19 @@ stimfile = 'stim_names';
     map_envelopes_to_stimuli(exp, subjid, r, param_idstring, ...
     resp_win, fixed_duration, 'overwrite', overwrite, ...
     'stimfile', stimfile, 'remove1backs', remove1backs);
+
+% load MAT_file_stim_mapped_envelopes
+load(MAT_file_stim_mapped_envelopes,'stim_names','envelopes_mapped_to_stim');
+
+export_dir = [root_directory '/' exp '/analysis/exports/' subjid '/r' num2str(r)];
+% save each stim seperately
+for i = 1:length(stim_names)
+    stim_name = stim_names{i};
+    out_file_path= [export_dir '/' subjid '_' stim_name '.mat'];
+    mkpdir(out_file_path);
+    data = envelopes_mapped_to_stim{i};
+    save(out_file_path, 'data');
 end
+
+
+
