@@ -11,6 +11,13 @@ echo "look at $ROOT/$SUBJECTID/"$SUBJECTID"_TaskLog.xlsx or $ROOT/$SUBJECTID/"$S
 cp /archive/dmi/ecog-raw-data/SummaryTaskLog.xlsx $ROOT
 mkdir -p $ROOT/data/subjects-v1/$SUBJECTID # create directory to put experiment files
 cp -r /archive/dmi/ecog-raw-data/$SUBJECTID/experiment-files/$PROJECT/* $ROOT/data/subjects-v1/$SUBJECTID/ # copy over all files
+mkdir -p $ROOT/stimuli # create directory to put stimulus files
+cp -r /archive/snormanh_lab/shared/experiment-stimuli/$PROJECT/stimuli/* $ROOT/stimuli/ # copy over all files
+find "$ROOT/stimuli/" -type f -name "*.wav" -exec bash -c '
+if [ ! -L "'"$ROOT"'/stimuli/$(basename "$1")" ]; then
+    ln -s "$1" "'"$ROOT"'/stimuli/$(basename "$1")"
+fi
+' _ {} "$ROOT" \;
 
 #figure out session NUMBERS according to "$SUBJECTID"_TaskLog.xlsx
 ##################################
